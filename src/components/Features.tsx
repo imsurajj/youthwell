@@ -7,7 +7,7 @@ const Features = () => {
     },
     {
       title: "Wellness Programs",
-      description: "Holistic health and fitness programs designed for young people",
+      description: "Holistic health and fitness programs designed for young people ",
       icon: "💪"
     },
     {
@@ -30,7 +30,7 @@ const Features = () => {
             Why Choose YouthWell?
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Our comprehensive approach to youth wellness combines professional expertise with peer support
+            Our comprehensive approach to the youth wellness combines professional expertise with peer support
           </p>
         </div>
         
