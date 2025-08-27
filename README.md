@@ -4,7 +4,10 @@
 2. Go to Settings → API and copy:
    - Project URL → `NEXT_PUBLIC_SUPABASE_URL`
    - anon public key → `NEXT_PUBLIC_SUPABASE_ANON_KEY`
-3. Create `.env.local` from `.env.example` and paste values.
+3. Copy `env.example` to `.env.local` and paste your values:
+   ```bash
+   cp env.example .env.local
+   ```
 4. Install dependencies:
    - pnpm: `pnpm add @supabase/supabase-js`
    - npm: `npm i @supabase/supabase-js`
@@ -15,6 +18,8 @@
    - yarn: `yarn dev`
 
 Login and Signup pages use `supabase.auth.signInWithPassword` and `supabase.auth.signUp`.
+
+**Note**: The `env.example` file is committed to the repository so users can easily set up their environment variables.
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
