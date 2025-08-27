@@ -1,9 +1,9 @@
 "use client";
 
-import { Moon, Sun, ChevronDown } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
-import { useTheme } from "@/contexts/ThemeContext";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 // Navigation links constant
 const NAVIGATION_LINKS = [
@@ -35,7 +35,6 @@ const LOGO_CONFIG = {
 };
 
 const Navbar = () => {
-  const { theme, toggleTheme } = useTheme();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [clickedDropdown, setClickedDropdown] = useState<string | null>(null);
@@ -211,19 +210,7 @@ const Navbar = () => {
         {/* Right Side */}
         <div className="flex items-center gap-3">
           {/* Theme Toggle */}
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={toggleTheme}
-            className="w-8 h-8 text-muted-foreground hover:text-primary transition-all duration-200 hover:scale-105"
-            aria-label="Toggle theme"
-          >
-            {theme === 'light' ? (
-              <Moon className="size-4" />
-            ) : (
-              <Sun className="size-4" />
-            )}
-          </Button>
+          <ThemeToggle />
 
           {/* Mobile Menu Button */}
           <Button

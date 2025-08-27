@@ -40,7 +40,7 @@ export default function SignupPage() {
         return;
       }
       setInfo("Check your email to confirm your account.");
-      router.push("/login");
+      router.push("/dashboard");
     } finally {
       setIsSubmitting(false);
     }
