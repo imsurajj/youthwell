@@ -2,7 +2,7 @@ const Features = () => {
   const features = [
     {
       title: "personilised wellness",
-      description: "receive AI -generated meditation scripts,affirmations and calming tips tailored to your needs",
+      description: "receive AI -generated meditation scripts,affirmations and calming tips tailored to your",
       icon: "🧠"
     },
     {
