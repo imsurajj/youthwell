@@ -6,8 +6,8 @@ const Features = () => {
       icon: "🧠"
     },
     {
-      title: "Wellness Programs",
-      description: "Holistic health and fitness programs designed for young people ",
+      title: "Anonymous Venting Chatbot",
+      description: "Share your thoughts and feeling anonymously with our empathetic chatbot,and review your history privately.",
       icon: "💪"
     },
     {
@@ -16,8 +16,8 @@ const Features = () => {
       icon: "🎯"
     },
     {
-      title: "Community Events",
-      description: "Connect with peers and build meaningful relationships",
+      title: "Mood History dashboard",
+      description: "Track your daily mood trends with a visual chart and monitor your streaks for consistent check-ins.",
       icon: "🤝"
     }
   ];
