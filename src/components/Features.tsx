@@ -3,7 +3,7 @@ const Features = () => {
     {
       title: "personilised wellness",
       description: "receive AI -generated meditation scripts,affirmations and calming tips tailored to your",
-      icon: "🧠"
+      icon: ""
     },
     {
       title: "Wellness Programs",
@@ -13,12 +13,12 @@ const Features = () => {
     {
       title: "Daily Wellness Reminders",
       description: "Get gentle reminders throughout the day to take a moment fir yourself, with nudges like ,take a deep breadth or drink some water",
-      icon: "🎯"
+      icon: "🔔"
     },
     {
       title: "Community Events",
       description: "Connect with peers and build meaningful relationships",
-      icon: "🤝"
+      icon: "🎯"
     }
   ];
 
