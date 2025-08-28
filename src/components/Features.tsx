@@ -1,8 +1,8 @@
 const Features = () => {
   const features = [
     {
-      title: "Mental Health Support",
-      description: "Professional counseling and therapy services tailored for youth",
+      title: "personilised wellness",
+      description: "receive AI -generated meditation scripts,affirmations and calming tips tailored to your needs",
       icon: "🧠"
     },
     {
@@ -11,8 +11,8 @@ const Features = () => {
       icon: "💪"
     },
     {
-      title: "Career Guidance",
-      description: "Professional development and career planning support",
+      title: "Daily Wellness Reminders",
+      description: "Get gentle reminders throughout the day to take a moment fir yourself, with nudges like ,take a deep breadth or drink some water",
       icon: "🎯"
     },
     {
