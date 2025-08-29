@@ -12,10 +12,10 @@ const NAVIGATION_LINKS = [
     title: "Services", 
     href: "#",
     dropdown: [
-      { title: "Mental Health", href: "#", description: "Professional counseling and therapy" },
-      { title: "Wellness Programs", href: "#", description: "Holistic health and fitness" },
-      { title: "Career Guidance", href: "#", description: "Professional development support" },
-      { title: "Community Events", href: "#", description: "Connect with peers" }
+      { title: "personalised wellness", href: "#", description: "" },
+      { title: "anonymous venting chatbot", href: "#", description: "" },
+      { title: "daily wellness reminders", href: "#", description: "" },
+      { title: "mood history dashboard", href: "#", description: "" }
     ]
   },
   { title: "About", href: "#" },
