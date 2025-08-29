@@ -3,7 +3,7 @@ const Features = () => {
     {
       title: "personilised wellness",
       description: "receive AI -generated meditation scripts,affirmations and calming tips tailored to your",
-      icon: ""
+      icon: "🎯"
     },
     {
       title: "Anonymous Venting Chatbot",
@@ -16,8 +16,8 @@ const Features = () => {
       icon: "🔔"
     },
     {
-      title: "Community Events",
-      description: "Connect with peers and build meaningful relationships",
+      title: "mood history dashboard",
+      description: "track your daily mood trends with a visual chart and monitor your streaks for consistent check-ins",
       icon: "🤝"
     }
   ];
