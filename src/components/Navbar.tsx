@@ -7,7 +7,7 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 
 // Navigation links constant
 const NAVIGATION_LINKS = [
-  { title: "Home", href: "#" },
+  { title: "Home", href: "/" },
   { 
     title: "Services", 
     href: "#",
@@ -18,8 +18,8 @@ const NAVIGATION_LINKS = [
       { title: "mood history dashboard", href: "#", description: "" }
     ]
   },
-  { title: "About", href: "#" },
-  { title: "Contact", href: "#" },
+  { title: "About", href: "/about" },
+  { title: "Contact", href: "/contact" },
 ];
 
 // Auth configuration constant
@@ -65,7 +65,7 @@ const Navbar = () => {
     setActiveDropdown(title);
   };
 
-  const handleDropdownLeave = (title: string) => {
+  const handleDropdownLeave = () => {
     dropdownTimeoutRef.current = setTimeout(() => {
       setActiveDropdown(null);
     }, 150); // Small delay to prevent closing when moving to dropdown content
@@ -98,7 +98,7 @@ const Navbar = () => {
           key={link.title}
           className="relative dropdown-container"
           onMouseEnter={() => !isMobile && handleDropdownHover(link.title)}
-          onMouseLeave={() => !isMobile && handleDropdownLeave(link.title)}
+          onMouseLeave={() => !isMobile && handleDropdownLeave()}
         >
           <button 
             className={`flex items-center gap-1 text-sm text-muted-foreground hover:text-primary transition-all duration-200 ${
