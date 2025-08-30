@@ -132,7 +132,7 @@ const YouthWell: React.FC = () => {
             <div className="bg-muted/10 hover:bg-muted/20 border border-border rounded-xl p-5 transition-all duration-200 hover:shadow-md">
               <h3 className="text-muted-foreground font-semibold mb-1">💬 Affirmation</h3>
               <p className="italic text-base">
-                "{wellnessPlans[selectedMood].affirmation}"
+                &ldquo;{wellnessPlans[selectedMood].affirmation}&rdquo;
               </p>
             </div>
 
@@ -142,7 +142,7 @@ const YouthWell: React.FC = () => {
                 🎨 Calming Activity
               </h3>
               <p className="text-sm leading-relaxed">
-                <strong>Mindful Doodling:</strong> {wellnessPlans[selectedMood].activity}
+                <span className="font-bold">Mindful Doodling:</span> {wellnessPlans[selectedMood].activity}
               </p>
             </div>
           </section>
