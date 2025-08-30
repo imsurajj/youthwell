@@ -57,7 +57,7 @@ export default function Contact() {
     <div className="bg-background text-foreground min-h-screen">
       <Navbar />
       
-                           <div className="max-w-4xl mx-auto px-6 py-8">
+      <div className="max-w-4xl mx-auto px-6 py-22">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold mb-4">Contact Us</h1>
           <p className="text-secondary text-lg">
@@ -93,7 +93,7 @@ export default function Contact() {
                  e.preventDefault();
                  const form = e.currentTarget;
                  if (form.checkValidity()) {
-                   handleSubmit(e as any);
+                   handleSubmit(e as React.FormEvent<HTMLFormElement>);
                  } else {
                    form.reportValidity();
                  }

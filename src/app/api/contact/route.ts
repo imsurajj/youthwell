@@ -3,9 +3,9 @@ import nodemailer from 'nodemailer';
 
 // Generate a unique ticket ID
 function generateTicketId(): string {
-  const timestamp = Date.now().toString(36);
-  const random = Math.random().toString(36).substring(2, 8);
-  return `TKT-${timestamp}-${random}`.toUpperCase();
+  const timestamp = Date.now();
+  const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+  return `YW${random}`;
 }
 
 // Email template for user confirmation
@@ -35,7 +35,7 @@ function getUserEmailTemplate(name: string, ticketId: string) {
 }
 
 // Email template for admin notification
-function getAdminEmailTemplate(formData: any, ticketId: string) {
+function getAdminEmailTemplate(formData: { name: string; email: string; message: string }, ticketId: string) {
   return `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
       <h2 style="color: #333;">New Contact Form Submission</h2>
@@ -104,8 +104,8 @@ export async function POST(request: NextRequest) {
       
       // Verify connection
       await transporter.verify();
-    } catch (error: any) {
-      console.error('Gmail configuration failed:', error.message);
+    } catch (error: unknown) {
+      console.error('Gmail configuration failed:', error instanceof Error ? error.message : 'Unknown error');
       return NextResponse.json(
         { 
           error: 'Gmail configuration failed. Please check your credentials.',

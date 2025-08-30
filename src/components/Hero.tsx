@@ -2,7 +2,7 @@ const Hero = () => {
   return (
     <section className="py-46 bg-background">
       <div className="max-w-6xl mx-auto px-4 text-center">
-        <h1 className="text-7xl md:text-6xl font-bold text-foreground mb-6">
+        <h1 className="text-6xl md:text-5xl font-bold text-foreground mb-6">
           Empowering Youth Wellness
         </h1>
         <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto">
