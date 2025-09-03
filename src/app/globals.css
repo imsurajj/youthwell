@@ -188,3 +188,21 @@
     letter-spacing: var(--tracking-normal);
   }
 }
+.black-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.black-scrollbar::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+
+.black-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #000;
+  border-radius: 6px;
+}
+
+.black-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #000 #1a1a1a;
+}
+
