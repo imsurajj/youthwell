@@ -13,7 +13,7 @@ const NAVIGATION_LINKS = [
     href: "#",
     dropdown: [
       { title: "personalised wellness", href: "/personalwellness", description: "" },
-      { title: "anonymous venting chatbot", href: "#", description: "" },
+      { title: "anonymous venting chatbot", href: "/chatbot", description: "" },
       { title: "daily wellness reminders", href: "#", description: "" },
       { title: "mood history dashboard", href: "#", description: "" }
     ]
