@@ -34,12 +34,12 @@ const Chatbot: React.FC = () => {
   const handleSend = () => {
     if (!input.trim()) return;
 
-    const userMessage = { sender: "user", text: input };
+    const userMessage:Message = { sender: "user", text: input };
     setMessages((prev) => [...prev, userMessage]);
     setInput("");
 
     setTimeout(() => {
-      const botReply = {
+      const botReply:Message = {
         sender: "bot",
         text: "Thank you for sharing that. I'm here for you.",
       };

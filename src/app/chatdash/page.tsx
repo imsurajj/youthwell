@@ -86,7 +86,7 @@ const DailyMood: React.FC = () => {
                 Longest Streak
               </h3>
               <p className="text-4xl font-bold mt-2 text-blue-400">21 <span className="text-base font-medium text-foreground">Days</span></p>
-              <p className="text-sm text-muted-foreground mt-1">You're doing great!</p>
+              <p className="text-sm text-muted-foreground mt-1">You &apos;re doing great!</p>
             </Card>
           </div>
         </div>
