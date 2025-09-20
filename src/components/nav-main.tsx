@@ -13,13 +13,27 @@ import {
 
 export function NavMain({
   items,
+  currentView,
+  setCurrentView,
 }: {
   items: {
     title: string
     url: string
     icon?: Icon
   }[]
+  currentView?: string;
+  setCurrentView?: (view: string) => void;
 }) {
+  const getViewFromUrl = (url: string) => {
+    switch (url) {
+      case '/chatdash': return 'analytics';
+      case '/chatbot': return 'chatbot';
+      case '/reminder': return 'reminders';
+      case '/personalwellness': return 'wellness';
+      default: return 'analytics';
+    }
+  };
+
   return (
     <SidebarGroup>
       <SidebarGroupContent className="flex flex-col gap-2">
@@ -43,14 +57,23 @@ export function NavMain({
           </SidebarMenuItem>
         </SidebarMenu>
         <SidebarMenu>
-          {items.map((item) => (
-            <SidebarMenuItem key={item.title}>
-              <SidebarMenuButton tooltip={item.title}>
-                {item.icon && <item.icon />}
-                <span>{item.title}</span>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          ))}
+          {items.map((item) => {
+            const viewKey = getViewFromUrl(item.url);
+            const isActive = currentView === viewKey;
+            
+            return (
+              <SidebarMenuItem key={item.title}>
+                <SidebarMenuButton 
+                  tooltip={item.title}
+                  isActive={isActive}
+                  onClick={() => setCurrentView?.(viewKey)}
+                >
+                  {item.icon && <item.icon />}
+                  <span>{item.title}</span>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            );
+          })}
         </SidebarMenu>
       </SidebarGroupContent>
     </SidebarGroup>
