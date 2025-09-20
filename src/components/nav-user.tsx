@@ -98,7 +98,15 @@ export function NavUser({
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={() => {
+              // Clear user data from localStorage
+              localStorage.removeItem('youthwell-user-logged-in');
+              localStorage.removeItem('youthwell-user-data');
+              // Dispatch custom event to update sidebar immediately
+              window.dispatchEvent(new CustomEvent('userDataChanged'));
+              // Redirect to login page
+              window.location.href = '/login';
+            }}>
               <IconLogout />
               Log out
             </DropdownMenuItem>

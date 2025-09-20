@@ -12,49 +12,73 @@ import { ChartAreaInteractive } from "@/components/chart-area-interactive";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { hasAcceptedCookies } from "@/lib/cookies";
+import { useAppContext } from "@/contexts/AppContext";
+
+const WELCOME_MESSAGES = [
+  {
+    id: 1,
+    text: "🌟 Welcome to YouthWell! I'm your AI wellness companion.\n\nI'm here to support you on your mental health journey with:\n• Personalized wellness plans\n• Mood tracking insights\n• Daily reminders and motivation\n• A safe space to talk about anything\n\nHow can I help you feel your best today?",
+    isUser: false,
+    timestamp: new Date()
+  },
+  {
+    id: 2,
+    text: "💚 Hello! I'm your YouthWell AI assistant.\n\nReady to support your mental wellness journey? I can help with:\n• Understanding your emotions\n• Creating healthy habits\n• Managing stress and anxiety\n• Building resilience and confidence\n\nWhat's on your mind today?",
+    isUser: false,
+    timestamp: new Date()
+  },
+  {
+    id: 3,
+    text: "🌈 Hi there! Welcome to your wellness space.\n\nI'm here to be your supportive companion, offering:\n• Gentle guidance and encouragement\n• Tools for emotional well-being\n• Personalized self-care strategies\n• A judgment-free zone to express yourself\n\nHow are you feeling right now?",
+    isUser: false,
+    timestamp: new Date()
+  }
+];
+
+const getRandomWelcomeMessage = () => {
+  const randomIndex = Math.floor(Math.random() * WELCOME_MESSAGES.length);
+  return { ...WELCOME_MESSAGES[randomIndex], id: Date.now() };
+};
 
 // Dashboard content types
 type DashboardView = 'analytics' | 'chatbot' | 'reminders' | 'wellness';
 
-// Analytics Cards Data - YouthWell focused
-const analyticsCards = [
-  {
-    title: "Daily Check-ins",
-    value: "47",
-    change: "+8.2%",
-    trend: "up",
-    description: "Today's wellness check-ins",
-    subtitle: "Up from yesterday"
-  },
-  {
-    title: "Mood Score",
-    value: "7.8",
-    change: "+0.3",
-    trend: "up",
-    description: "Average mood this week",
-    subtitle: "Improving trend"
-  },
-  {
-    title: "Active Users",
-    value: "1,234",
-    change: "+15.3%",
-    trend: "up",
-    description: "Users this month",
-    subtitle: "Growing community"
-  },
-  {
-    title: "Wellness Streak",
-    value: "12 days",
-    change: "+3 days",
-    trend: "up",
-    description: "Current streak",
-    subtitle: "Keep it up!"
-  }
-];
 
 
 // Content components for different views
-const AnalyticsContent = () => (
+const AnalyticsContent = () => {
+  const { userContext, trackActivity } = useAppContext();
+  const [showSummary, setShowSummary] = useState(false);
+  
+  // Update analytics cards with real data
+  const dynamicAnalyticsCards = [
+    {
+      title: "Daily Check-ins",
+      value: userContext.analyticsData?.dailyCheckins || 47,
+      change: "+12%",
+      trend: "up" as const
+    },
+    {
+      title: "Mood Score",
+      value: `${userContext.analyticsData?.moodScore?.toFixed(1) || 7.8}/10`,
+      change: "+0.3",
+      trend: "up" as const
+    },
+    {
+      title: "Wellness Streak",
+      value: `${userContext.analyticsData?.wellnessStreak || 12} days`,
+      change: "+2 days",
+      trend: "up" as const
+    },
+    {
+      title: "Community Support",
+      value: `${userContext.analyticsData?.communitySupport || 1234} users`,
+      change: "+23",
+      trend: "up" as const
+    }
+  ];
+
+  return (
   <div className="flex flex-1 flex-col">
     <div className="@container/main flex flex-1 flex-col gap-2">
       <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
@@ -67,9 +91,61 @@ const AnalyticsContent = () => (
             </p>
           </div>
         </div>
+
+        {/* Quick Actions & Summary */}
+        <div className="px-4 lg:px-6 mb-6">
+          <div className="flex flex-wrap gap-3 items-center justify-between">
+            <div className="flex flex-wrap gap-2">
+              <button
+                onClick={() => trackActivity('checkin')}
+                className="px-3 py-2 text-sm bg-primary/10 text-primary rounded-lg hover:bg-primary/20 transition-colors flex items-center gap-2"
+              >
+                <span className="text-lg">📝</span>
+                Check-in
+              </button>
+              <button
+                onClick={() => trackActivity('wellness')}
+                className="px-3 py-2 text-sm bg-primary/10 text-primary rounded-lg hover:bg-primary/20 transition-colors flex items-center gap-2"
+              >
+                <span className="text-lg">🧘</span>
+                Meditate
+              </button>
+              <button
+                onClick={() => trackActivity('wellness')}
+                className="px-3 py-2 text-sm bg-primary/10 text-primary rounded-lg hover:bg-primary/20 transition-colors flex items-center gap-2"
+              >
+                <span className="text-lg">📚</span>
+                Journal
+              </button>
+              <button
+                onClick={() => trackActivity('wellness')}
+                className="px-3 py-2 text-sm bg-primary/10 text-primary rounded-lg hover:bg-primary/20 transition-colors flex items-center gap-2"
+              >
+                <span className="text-lg">💪</span>
+                Exercise
+              </button>
+              <button
+                onClick={() => trackActivity('reminder')}
+                className="px-3 py-2 text-sm bg-primary/10 text-primary rounded-lg hover:bg-primary/20 transition-colors flex items-center gap-2"
+              >
+                <span className="text-lg">⏰</span>
+                Reminder
+              </button>
+            </div>
+            <button 
+              onClick={() => setShowSummary(true)}
+              className="px-3 py-2 text-sm bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors flex items-center gap-2"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+              </svg>
+              Summary
+            </button>
+          </div>
+        </div>
         
         <div className="grid grid-cols-1 gap-4 px-4 lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-4">
-          {analyticsCards.map((card, index) => (
+          {dynamicAnalyticsCards.map((card, index) => (
             <Card key={index} className="@container/card">
               <CardHeader>
                 <CardDescription>{card.title}</CardDescription>
@@ -84,12 +160,7 @@ const AnalyticsContent = () => (
                 </div>
               </CardHeader>
               <CardContent className="flex-col items-start gap-1.5 text-sm">
-                <div className="line-clamp-1 flex gap-2 font-medium">
-                  {card.description} {card.trend === 'up' ? <IconTrendingUp className="size-4" /> : <IconTrendingDown className="size-4" />}
-                </div>
-                <div className="text-muted-foreground">
-                  {card.subtitle}
-                </div>
+                {/* Removed bottom icons */}
               </CardContent>
             </Card>
           ))}
@@ -110,6 +181,7 @@ const AnalyticsContent = () => (
           </Card>
         </div>
         
+
         {/* Insights Section */}
         <div className="px-4 lg:px-6">
           <Card>
@@ -125,10 +197,9 @@ const AnalyticsContent = () => (
                   <div className="flex items-start gap-3">
                     <div className="text-green-600 text-xl">💡</div>
                     <div>
-                      <h4 className="font-semibold text-green-800 dark:text-green-200">Positive Pattern Detected</h4>
+                      <h4 className="font-semibold text-green-800 dark:text-green-200">Recent Activity</h4>
                       <p className="text-sm text-green-700 dark:text-green-300 mt-1">
-                        Your mood scores have been consistently higher on days when you practice morning meditation. 
-                        Consider maintaining this routine for continued emotional well-being.
+                        {userContext.analyticsData?.lastActivity || "Welcome to YouthWell! Start your wellness journey today."}
                       </p>
                     </div>
                   </div>
@@ -138,11 +209,13 @@ const AnalyticsContent = () => (
                   <div className="flex items-start gap-3">
                     <div className="text-blue-600 text-xl">📊</div>
                     <div>
-                      <h4 className="font-semibold text-blue-800 dark:text-blue-200">Weekly Summary</h4>
-                      <p className="text-sm text-blue-700 dark:text-blue-300 mt-1">
-                        This week you&apos;ve shown great consistency with your wellness check-ins. 
-                        Your average mood score of 7.8/10 indicates a positive emotional state.
-                      </p>
+                      <h4 className="font-semibold text-blue-800 dark:text-blue-200">Activity Summary</h4>
+                      <div className="text-sm text-blue-700 dark:text-blue-300 mt-1 space-y-1">
+                        <div>Messages sent: {userContext.analyticsData?.totalMessages || 0}</div>
+                        <div>Mood changes: {userContext.analyticsData?.moodChanges || 0}</div>
+                        <div>Wellness activities: {userContext.analyticsData?.wellnessActivities || 0}</div>
+                        <div>Reminders set: {userContext.analyticsData?.remindersSet || 0}</div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -183,21 +256,116 @@ const AnalyticsContent = () => (
         </div>
       </div>
     </div>
+
+    {/* Summary Popup */}
+    {showSummary && (
+      <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+        <div className="bg-background border rounded-lg max-w-2xl w-full max-h-[80vh] overflow-y-auto">
+          <div className="p-6">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-2xl font-bold">Wellness Summary Report</h2>
+              <button
+                onClick={() => setShowSummary(false)}
+                className="text-muted-foreground hover:text-foreground transition-colors"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="p-4 bg-muted/50 rounded-lg">
+                  <h3 className="font-semibold text-sm text-muted-foreground">Daily Check-ins</h3>
+                  <p className="text-2xl font-bold">{userContext.analyticsData?.dailyCheckins || 47}</p>
+                </div>
+                <div className="p-4 bg-muted/50 rounded-lg">
+                  <h3 className="font-semibold text-sm text-muted-foreground">Mood Score</h3>
+                  <p className="text-2xl font-bold">{userContext.analyticsData?.moodScore?.toFixed(1) || 7.8}/10</p>
+                </div>
+                <div className="p-4 bg-muted/50 rounded-lg">
+                  <h3 className="font-semibold text-sm text-muted-foreground">Wellness Streak</h3>
+                  <p className="text-2xl font-bold">{userContext.analyticsData?.wellnessStreak || 12} days</p>
+                </div>
+                <div className="p-4 bg-muted/50 rounded-lg">
+                  <h3 className="font-semibold text-sm text-muted-foreground">Community Support</h3>
+                  <p className="text-2xl font-bold">{userContext.analyticsData?.communitySupport || 1234} users</p>
+                </div>
+              </div>
+              
+              <div className="border-t pt-4">
+                <h3 className="font-semibold mb-3">Activity Breakdown</h3>
+                <div className="space-y-2 text-sm">
+                  <div className="flex justify-between">
+                    <span>Messages sent:</span>
+                    <span className="font-semibold">{userContext.analyticsData?.totalMessages || 0}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Mood changes:</span>
+                    <span className="font-semibold">{userContext.analyticsData?.moodChanges || 0}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Wellness activities:</span>
+                    <span className="font-semibold">{userContext.analyticsData?.wellnessActivities || 0}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Reminders set:</span>
+                    <span className="font-semibold">{userContext.analyticsData?.remindersSet || 0}</span>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="border-t pt-4">
+                <h3 className="font-semibold mb-2">Last Activity</h3>
+                <p className="text-sm text-muted-foreground">
+                  {userContext.analyticsData?.lastActivity || 'Welcome to YouthWell! Start your wellness journey today.'}
+                </p>
+              </div>
+              
+              <div className="border-t pt-4">
+                <p className="text-xs text-muted-foreground">
+                  Report generated on {new Date().toLocaleString()}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    )}
   </div>
-);
+  );
+};
 
 const ChatbotContent = () => {
-  const [messages, setMessages] = useState([
-    {
-      id: 1,
-      text: "Hi there! I&apos;m your YouthWell AI assistant. I&apos;m here to listen and help with your mental health and wellness journey. What&apos;s on your mind today?",
-      isUser: false,
-      timestamp: new Date()
-    }
-  ]);
+  const { userContext, addChatMessage, clearChatHistory, trackActivity } = useAppContext();
+  const [messages, setMessages] = useState<Array<{
+    id: number;
+    text: string;
+    isUser: boolean;
+    timestamp: Date;
+  }>>([]);
   const [inputMessage, setInputMessage] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  // Initialize messages from context or default welcome message
+  useEffect(() => {
+    if (userContext.chatHistory && userContext.chatHistory.length > 0) {
+      // Ensure all messages have required properties
+      const validMessages = userContext.chatHistory.filter(msg => 
+        msg && typeof msg.text === 'string' && msg.timestamp
+      ).map(msg => ({
+        id: msg.id || Date.now(),
+        text: msg.text || '',
+        isUser: Boolean(msg.isUser),
+        timestamp: msg.timestamp instanceof Date ? msg.timestamp : new Date(msg.timestamp)
+      }));
+      setMessages(validMessages);
+    } else {
+      setMessages([getRandomWelcomeMessage()]);
+    }
+  }, [userContext.chatHistory]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -218,61 +386,52 @@ const ChatbotContent = () => {
     };
 
     setMessages(prev => [...prev, userMessage]);
+    addChatMessage(inputMessage, true);
+    trackActivity('message');
     setInputMessage("");
     setIsTyping(true);
 
-    // Simulate AI response delay
-    setTimeout(() => {
-      const aiResponse = generateAIResponse(inputMessage);
-      const aiMessage = {
+    try {
+      // Call the real AI API
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          message: inputMessage,
+          context: userContext
+        }),
+      });
+
+      const data = await response.json();
+      
+      if (response.ok) {
+        const aiMessage = {
+          id: Date.now() + 1,
+          text: data.response,
+          isUser: false,
+          timestamp: new Date()
+        };
+        setMessages(prev => [...prev, aiMessage]);
+        addChatMessage(data.response, false);
+      } else {
+        throw new Error(data.error || 'Failed to get response');
+      }
+    } catch (error) {
+      console.error('Error getting AI response:', error);
+      const errorMessage = {
         id: Date.now() + 1,
-        text: aiResponse,
+        text: "I'm sorry, I'm having trouble processing your request right now. Please try again later.",
         isUser: false,
         timestamp: new Date()
       };
-      setMessages(prev => [...prev, aiMessage]);
+      setMessages(prev => [...prev, errorMessage]);
+    } finally {
       setIsTyping(false);
-    }, 1000 + Math.random() * 2000);
+    }
   };
 
-  const generateAIResponse = (userInput: string) => {
-    const input = userInput.toLowerCase();
-    
-    if (input.includes('sad') || input.includes('depressed') || input.includes('down')) {
-      return "I hear that you&apos;re feeling down, and I want you to know that it&apos;s okay to feel this way. Sometimes our emotions can feel overwhelming. Would you like to try a simple breathing exercise together? Take three deep breaths with me - in for 4 counts, hold for 4, out for 6. You&apos;re not alone in this.";
-    }
-    
-    if (input.includes('anxious') || input.includes('anxiety') || input.includes('worried')) {
-      return "Anxiety can feel really intense, but remember that these feelings are temporary. Let's try a grounding technique: Name 5 things you can see, 4 things you can touch, 3 things you can hear, 2 things you can smell, and 1 thing you can taste. This can help bring you back to the present moment.";
-    }
-    
-    if (input.includes('stressed') || input.includes('overwhelmed')) {
-      return "It sounds like you're carrying a lot right now. Stress can build up and feel overwhelming. Let's break this down - what's one small thing you can do right now to take care of yourself? Even something as simple as drinking a glass of water or taking a few deep breaths can make a difference.";
-    }
-    
-    if (input.includes('happy') || input.includes('good') || input.includes('great')) {
-      return "That&apos;s wonderful to hear! I&apos;m so glad you&apos;re feeling positive. It&apos;s important to celebrate these moments. What do you think contributed to feeling this way? Sometimes recognizing what brings us joy can help us create more of those moments.";
-    }
-    
-    if (input.includes('tired') || input.includes('exhausted') || input.includes('sleep')) {
-      return "It sounds like you might need some rest. Sleep is so important for our mental health. Are you getting enough sleep? Sometimes our bodies and minds need extra care when we're feeling tired. Consider creating a relaxing bedtime routine to help you wind down.";
-    }
-    
-    if (input.includes('help') || input.includes('support')) {
-      return "I&apos;m here to support you. Remember, seeking help is a sign of strength, not weakness. If you&apos;re feeling like you need more support than I can provide, consider reaching out to a mental health professional. You can also try some of the wellness activities in your dashboard, like meditation or journaling.";
-    }
-    
-    // Default responses
-    const defaultResponses = [
-      "Thank you for sharing that with me. I&apos;m listening and I care about how you&apos;re feeling. Can you tell me more about what&apos;s going on?",
-      "I appreciate you opening up to me. It takes courage to share your thoughts and feelings. What would be most helpful for you right now?",
-      "I&apos;m here to listen without judgment. Your feelings are valid, and it&apos;s okay to not be okay sometimes. What&apos;s on your mind?",
-      "Thank you for trusting me with your thoughts. Remember, you&apos;re not alone in this journey. Is there anything specific you&apos;d like to work through together?",
-      "I can hear that this is important to you. Take your time, and know that I&apos;m here to support you through whatever you&apos;re experiencing."
-    ];
-    
-    return defaultResponses[Math.floor(Math.random() * defaultResponses.length)];
-  };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
@@ -285,39 +444,159 @@ const ChatbotContent = () => {
     <div className="flex flex-1 flex-col p-6">
       <Card className="flex-1 flex flex-col">
         <CardHeader>
-          <CardTitle>AI Wellness Assistant</CardTitle>
-          <CardDescription>Your personal mental health companion - here to listen and support you</CardDescription>
+          <div className="flex items-center justify-between">
+            <div>
+              <CardTitle>AI Wellness Assistant</CardTitle>
+              <CardDescription>Your personal mental health companion - here to listen and support you</CardDescription>
+            </div>
+            {messages.length > 1 && (
+              <div className="flex gap-2">
+                <div className="text-xs text-muted-foreground flex items-center">
+                  {messages.filter(m => m.isUser).length} messages
+                </div>
+                <button
+                  onClick={() => {
+                    clearChatHistory();
+                  setMessages([getRandomWelcomeMessage()]);
+                  }}
+                  className="px-3 py-1 text-xs text-muted-foreground hover:text-foreground border border-input rounded-md hover:bg-muted transition-colors"
+                >
+                  Clear Chat
+                </button>
+              </div>
+            )}
+          </div>
         </CardHeader>
         <CardContent className="flex-1 flex flex-col">
           <div className="flex-1 bg-muted rounded-lg p-4 mb-4 overflow-y-auto max-h-96">
-            <div className="space-y-4">
-              {messages.map((message) => (
-                <div key={message.id} className={`flex ${message.isUser ? 'justify-end' : 'justify-start'}`}>
-                  <div className={`p-3 rounded-lg max-w-sm ${
-                    message.isUser 
-                      ? 'bg-primary text-primary-foreground' 
-                      : 'bg-background border border-input'
-                  }`}>
-                    <div className="text-sm">{message.text}</div>
-                    <div className={`text-xs mt-1 ${
-                      message.isUser ? 'text-primary-foreground/70' : 'text-muted-foreground'
-                    }`}>
-                      {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                <div className="space-y-4">
+                  {messages.filter(message => message && message.text).map((message) => (
+                    <div key={message.id} className={`flex ${message.isUser ? 'justify-end' : 'justify-start'} items-start gap-3`}>
+                      {!message.isUser && (
+                        <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-1">
+                          <svg className="w-4 h-4 text-primary" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                          </svg>
+                        </div>
+                      )}
+                      <div className={`p-3 rounded-lg max-w-sm ${
+                        message.isUser
+                          ? 'bg-primary text-primary-foreground'
+                          : 'bg-background border border-input'
+                      }`}>
+                        <div className="text-sm leading-relaxed">
+                          {(message.text || '').split('\n').map((line, index) => {
+                            const trimmedLine = line.trim();
+                            
+                            // Handle bullet points
+                            if (trimmedLine.startsWith('•') || trimmedLine.startsWith('-') || trimmedLine.startsWith('*')) {
+                              return (
+                                <div key={index} className="flex items-start gap-2 mb-2">
+                                  <span className="mt-1">•</span>
+                                  <span className="flex-1">{trimmedLine.substring(1).trim()}</span>
+                                </div>
+                              );
+                            }
+                            
+                            // Handle numbered lists
+                            if (/^\d+\./.test(trimmedLine)) {
+                              const number = trimmedLine.split('.')[0];
+                              const text = trimmedLine.substring(trimmedLine.indexOf('.') + 1).trim();
+                              return (
+                                <div key={index} className="flex items-start gap-2 mb-2">
+                                  <span className="mt-1 font-semibold">{number}.</span>
+                                  <span className="flex-1">{text}</span>
+                                </div>
+                              );
+                            }
+                            
+                            // Handle headers (lines that end with :)
+                            if (trimmedLine.endsWith(':') && trimmedLine.length < 50) {
+                              return (
+                                <div key={index} className="font-semibold mb-2 mt-4 first:mt-0">
+                                  {trimmedLine}
+                                </div>
+                              );
+                            }
+                            
+                            // Handle emphasis (text between **)
+                            if (trimmedLine.includes('**')) {
+                              const parts = trimmedLine.split('**');
+                              return (
+                                <div key={index} className="mb-2">
+                                  {parts.map((part, partIndex) => 
+                                    partIndex % 2 === 1 ? (
+                                      <span key={partIndex} className="font-semibold">{part}</span>
+                                    ) : (
+                                      <span key={partIndex}>{part}</span>
+                                    )
+                                  )}
+                                </div>
+                              );
+                            }
+                            
+                            // Handle questions (lines ending with ?)
+                            if (trimmedLine.endsWith('?')) {
+                              return (
+                                <div key={index} className="mb-2 italic">
+                                  {trimmedLine}
+                                </div>
+                              );
+                            }
+                            
+                            // Handle suggestions (lines starting with "Try" or "Consider")
+                            if (trimmedLine.startsWith('Try') || trimmedLine.startsWith('Consider') || trimmedLine.startsWith('You can')) {
+                              return (
+                                <div key={index} className="mb-2">
+                                  💡 {trimmedLine}
+                                </div>
+                              );
+                            }
+                            
+                            // Handle empty lines
+                            if (trimmedLine === '') {
+                              return <div key={index} className="h-2"></div>;
+                            }
+                            
+                            // Regular paragraphs
+                            return (
+                              <div key={index} className="mb-2">
+                                {trimmedLine}
+                              </div>
+                            );
+                          })}
+                        </div>
+                        <div className={`text-xs mt-1 ${
+                          message.isUser ? 'text-primary-foreground/70' : 'text-muted-foreground'
+                        }`}>
+                          {message.timestamp ? message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Now'}
+                        </div>
+                      </div>
+                      {message.isUser && (
+                        <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center flex-shrink-0 mt-1">
+                          <svg className="w-4 h-4 text-primary-foreground" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                          </svg>
+                        </div>
+                      )}
                     </div>
-                  </div>
-                </div>
-              ))}
-              {isTyping && (
-                <div className="flex justify-start">
-                  <div className="bg-background border border-input p-3 rounded-lg">
-                    <div className="flex items-center gap-1">
-                      <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce"></div>
-                      <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                      <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                  ))}
+                  {isTyping && (
+                    <div className="flex justify-start items-start gap-3">
+                      <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-1">
+                        <svg className="w-4 h-4 text-primary" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                        </svg>
+                      </div>
+                      <div className="bg-background border border-input p-3 rounded-lg">
+                        <div className="flex items-center gap-1">
+                          <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce"></div>
+                          <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                          <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
-              )}
+                  )}
               <div ref={messagesEndRef} />
             </div>
           </div>
@@ -344,8 +623,11 @@ const ChatbotContent = () => {
   );
 };
 
-const RemindersContent = () => (
-  <div className="flex flex-1 flex-col p-6">
+const RemindersContent = () => {
+  const { trackActivity } = useAppContext();
+  
+  return (
+    <div className="flex flex-1 flex-col p-6">
     <Card className="flex-1">
       <CardHeader>
         <CardTitle className="text-2xl font-bold">Daily Reminders</CardTitle>
@@ -417,23 +699,29 @@ const RemindersContent = () => (
           </Card>
         ))}
         <div className="pt-4">
-          <button className="w-full py-4 bg-primary text-primary-foreground rounded-lg font-semibold text-base hover:bg-primary/90 active:bg-primary/95 transition-all duration-200 shadow-lg hover:shadow-xl">
+          <button 
+            onClick={() => trackActivity('reminder')}
+            className="w-full py-4 bg-primary text-primary-foreground rounded-lg font-semibold text-base hover:bg-primary/90 active:bg-primary/95 transition-all duration-200 shadow-lg hover:shadow-xl"
+          >
             Save Changes
           </button>
         </div>
       </CardContent>
     </Card>
   </div>
-);
+  );
+};
 
 const WellnessContent = () => {
-  const [selectedMood, setSelectedMood] = useState<string | null>(null);
+  const { userContext, updateMood, updateWellnessPlan, trackActivity } = useAppContext();
+  const [selectedMood, setSelectedMood] = useState<string | null>(userContext.selectedMood || null);
   const [wellnessPlan, setWellnessPlan] = useState<{
     meditation: string;
     affirmation: string;
     activity: string;
     color: string;
-  } | null>(null);
+  } | null>(userContext.wellnessPlan || null);
+  const [isGenerating, setIsGenerating] = useState(false);
 
   const moods = [
     { emoji: '😊', name: 'Happy', value: 'happy' },
@@ -497,12 +785,41 @@ const WellnessContent = () => {
     }
   }, []);
 
-  const handleMoodSelect = (moodValue: string) => {
+  const handleMoodSelect = async (moodValue: string) => {
     setSelectedMood(moodValue);
-    setWellnessPlan(getWellnessPlan(moodValue));
-    // Save mood selection to localStorage only if cookies are accepted
-    if (hasAcceptedCookies()) {
-      localStorage.setItem('youthwell-selected-mood', moodValue);
+    updateMood(moodValue);
+    trackActivity('mood');
+    setIsGenerating(true);
+
+    try {
+      // Call the real AI API for wellness plan
+      const response = await fetch('/api/wellness', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          mood: moodValue,
+          context: userContext
+        }),
+      });
+
+      const data = await response.json();
+      
+      if (response.ok) {
+        setWellnessPlan(data.wellnessPlan);
+        updateWellnessPlan(data.wellnessPlan);
+      } else {
+        throw new Error(data.error || 'Failed to generate wellness plan');
+      }
+    } catch (error) {
+      console.error('Error generating wellness plan:', error);
+      // Fallback to default plan
+      const defaultPlan = getWellnessPlan(moodValue);
+      setWellnessPlan(defaultPlan);
+      updateWellnessPlan(defaultPlan);
+    } finally {
+      setIsGenerating(false);
     }
   };
 
@@ -530,14 +847,23 @@ const WellnessContent = () => {
               <button
                 key={mood.value}
                 onClick={() => handleMoodSelect(mood.value)}
-                className={`p-6 border-2 rounded-lg transition-all duration-200 hover:scale-105 ${
+                disabled={isGenerating}
+                className={`p-6 border-2 rounded-lg transition-all duration-200 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed ${
                   selectedMood === mood.value
                     ? 'border-primary bg-primary/10 shadow-lg'
                     : 'border-input hover:border-primary/50 hover:bg-muted/50'
                 }`}
               >
-                <div className="text-4xl mb-3">{mood.emoji}</div>
-                <div className="text-sm font-semibold text-foreground">{mood.name}</div>
+                <div className="text-4xl mb-3">
+                  {isGenerating && selectedMood === mood.value ? (
+                    <div className="w-8 h-8 border-2 border-primary/30 border-t-primary rounded-full animate-spin mx-auto"></div>
+                  ) : (
+                    mood.emoji
+                  )}
+                </div>
+                <div className="text-sm font-semibold text-foreground">
+                  {isGenerating && selectedMood === mood.value ? 'Generating...' : mood.name}
+                </div>
               </button>
             ))}
           </div>
@@ -635,5 +961,5 @@ export default function Page() {
         {renderContent()}
       </SidebarInset>
     </SidebarProvider>
-  )
+  );
 }

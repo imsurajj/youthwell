@@ -25,11 +25,27 @@ export default function LoginPage() {
     setIsSubmitting(true);
     setError(null);
     try {
-      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
       if (error) {
         setError(error.message);
         return;
       }
+      
+      // Store user data in localStorage for sidebar display
+      if (data.user) {
+        const userData = {
+          name: data.user.user_metadata?.full_name || data.user.email?.split('@')[0] || 'User',
+          email: data.user.email || email,
+          avatar: data.user.user_metadata?.avatar_url || '/avatars/default.jpg',
+        };
+        
+        localStorage.setItem('youthwell-user-logged-in', 'true');
+        localStorage.setItem('youthwell-user-data', JSON.stringify(userData));
+        
+        // Dispatch custom event to update sidebar immediately
+        window.dispatchEvent(new CustomEvent('userDataChanged'));
+      }
+      
       router.push("/dashboard");
     } finally {
       setIsSubmitting(false);

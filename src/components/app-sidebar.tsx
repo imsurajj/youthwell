@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { useState, useEffect } from "react"
 import {
   IconDashboard,
   IconHelp,
@@ -79,6 +80,69 @@ export function AppSidebar({
   currentView?: string;
   setCurrentView?: (view: string) => void;
 }) {
+  const [user, setUser] = useState({
+    name: "Guest User",
+    email: "guest@youthwell.com",
+    avatar: "/avatars/default.jpg",
+  });
+
+  useEffect(() => {
+    // Get user data from localStorage
+    const getUserData = () => {
+      const isLoggedIn = localStorage.getItem('youthwell-user-logged-in');
+      const savedUser = localStorage.getItem('youthwell-user-data');
+      
+      if (isLoggedIn && savedUser) {
+        try {
+          const userData = JSON.parse(savedUser);
+          setUser({
+            name: userData.name || "User",
+            email: userData.email || "user@youthwell.com",
+            avatar: userData.avatar || "/avatars/default.jpg",
+          });
+        } catch (error) {
+          console.error('Error parsing user data:', error);
+          // If there's an error parsing, show guest user
+          setUser({
+            name: "Guest User",
+            email: "guest@youthwell.com",
+            avatar: "/avatars/default.jpg",
+          });
+        }
+      } else {
+        // No user logged in, show guest
+        setUser({
+          name: "Guest User",
+          email: "guest@youthwell.com",
+          avatar: "/avatars/default.jpg",
+        });
+      }
+    };
+
+    getUserData();
+
+    // Listen for storage changes to update user data in real-time
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'youthwell-user-data' || e.key === 'youthwell-user-logged-in') {
+        getUserData();
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+
+    // Also listen for custom events for same-tab updates
+    const handleUserDataChange = () => {
+      getUserData();
+    };
+
+    window.addEventListener('userDataChanged', handleUserDataChange);
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      window.removeEventListener('userDataChanged', handleUserDataChange);
+    };
+  }, []);
+
   return (
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>
@@ -88,7 +152,7 @@ export function AppSidebar({
               asChild
               className="data-[slot=sidebar-menu-button]:!p-1.5"
             >
-              <button onClick={() => setCurrentView?.('dashboard')}>
+              <button onClick={() => setCurrentView?.('analytics')}>
                 <IconInnerShadowTop className="!size-5" />
                 <span className="text-base font-semibold">YouthWell</span>
               </button>
@@ -101,7 +165,7 @@ export function AppSidebar({
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser user={user} />
       </SidebarFooter>
     </Sidebar>
   )

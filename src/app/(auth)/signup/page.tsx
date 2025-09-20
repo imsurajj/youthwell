@@ -28,7 +28,7 @@ export default function SignupPage() {
     setError(null);
     setInfo(null);
     try {
-      const { error } = await supabase.auth.signUp({
+      const { data, error } = await supabase.auth.signUp({
         email,
         password,
         options: {
@@ -39,6 +39,22 @@ export default function SignupPage() {
         setError(error.message);
         return;
       }
+      
+      // Store user data in localStorage for sidebar display
+      if (data.user) {
+        const userData = {
+          name: fullName || data.user.email?.split('@')[0] || 'User',
+          email: data.user.email || email,
+          avatar: '/avatars/default.jpg',
+        };
+        
+        localStorage.setItem('youthwell-user-logged-in', 'true');
+        localStorage.setItem('youthwell-user-data', JSON.stringify(userData));
+        
+        // Dispatch custom event to update sidebar immediately
+        window.dispatchEvent(new CustomEvent('userDataChanged'));
+      }
+      
       setInfo("Check your email to confirm your account.");
       router.push("/dashboard");
     } finally {

@@ -60,7 +60,7 @@ const Hero = () => {
           <button 
             onClick={handleGetStarted}
             disabled={isLoading}
-            className="px-8 py-3 bg-primary text-primary-foreground rounded-lg font-semibold hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="px-8 py-3 bg-primary text-primary-foreground rounded-lg font-semibold cursor-pointer hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isLoading ? (
               <span className="flex items-center gap-2">
@@ -75,7 +75,7 @@ const Hero = () => {
           </button>
           <button 
             onClick={handleLearnMore}
-            className="px-8 py-3 border border-border text-foreground rounded-lg font-semibold hover:bg-accent transition-colors"
+            className="px-8 py-3 border border-border text-foreground rounded-lg font-semibold cursor-pointer hover:bg-accent transition-colors"
           >
             Learn More
           </button>
@@ -87,10 +87,10 @@ const Hero = () => {
             {isAuthenticated ? (
               <span className="flex items-center justify-center gap-2">
                 <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                Welcome back! Click to access your dashboard
+                Welcome back! Click to access your <a href="/dashboard" className="text-primary font-semibold">Dashboard</a>
               </span>
             ) : (
-              <span>New to YouthWell? Sign up to start your wellness journey</span>
+              <span>New to YouthWell? <a href="/signup" className="text-primary font-semibold">Sign up</a> to start your wellness journey</span>
             )}
           </div>
         )}
