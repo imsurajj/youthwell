@@ -87,7 +87,7 @@ const Hero = () => {
             {isAuthenticated ? (
               <span className="flex items-center justify-center gap-2">
                 <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                Welcome back! Click to access your <a href="/dashboard" className="text-primary font-semibold">Dashboard</a>
+                Welcome back! 
               </span>
             ) : (
               <span>New to YouthWell? <a href="/signup" className="text-primary font-semibold">Sign up</a> to start your wellness journey</span>
